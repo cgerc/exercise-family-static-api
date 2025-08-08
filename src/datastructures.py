@@ -28,12 +28,12 @@ class FamilyStructure:
     def add_member(self, member):
         ## You have to implement this method
         ## Append the member to the list of _members
-        pass
+        return self._member
 
     def delete_member(self, id):
         ## You have to implement this method
         ## Loop the list and delete the member with the given id
-        pass
+        return 
 
     def get_member(self, id):
         ## You have to implement this method
