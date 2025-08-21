@@ -1,15 +1,29 @@
 class FamilyStructure:
     def __init__(self, last_name):
         self.last_name = last_name
-        self._next_id = 1
+        self._next_id = 3  # Comienza en 3 porque ya hay 3 miembros con IDs 0, 1, 2
         self._members = [
             {
-                "id": self._generate_id(),
+                "id": 0,
                 "first_name": "John",
                 "last_name": last_name,
                 "age": 33,
                 "lucky_numbers": [7, 13, 22]
-            }
+            },
+            {
+                "id": 1,
+                "first_name": "Jane",
+                "last_name": "Jackson",
+                "age": 35,
+                "lucky_numbers": [10, 14, 3]
+            },
+            {
+                "id": 2,
+                "first_name": "Jimmy",
+                "last_name": "Jackson",
+                "age": 5,
+                "lucky_numbers": [1]
+            },
         ]
 
     def _generate_id(self):
@@ -20,9 +34,11 @@ class FamilyStructure:
     def add_member(self, member):
         member["id"] = self._generate_id()
         member["last_name"] = self.last_name
+        if "lucky_numbers" not in member:
+            member["lucky_numbers"] = []
         self._members.append(member)
         print("Añadir miembro:", member)
-        return self._members
+        return member  # Devuelve solo el miembro agregado, no toda la lista
 
     def delete_member(self, id):
         for i, member in enumerate(self._members):

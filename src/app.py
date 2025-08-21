@@ -18,7 +18,20 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/member/<int:id>', methods=['GET'])
+@app.route('/members', methods=['POST'])
+def add_member():
+    new_member = request.get_json()
+    if not new_member or not all(key in new_member for key in ["first_name", "age", "lucky_numbers"]):
+        return jsonify({"error": "Cuerpo de la solicitud inválido"}), 400
+    member = jackson_family.add_member(new_member)
+    return jsonify(member), 200
+
+@app.route('/members', methods=['GET'])
+def get_all_members():
+    members = jackson_family.get_all_members()
+    return jsonify(members), 200
+
+@app.route('/members/<int:id>', methods=['GET'])
 def get_member(id):
     member = jackson_family.get_member(id)
     if member:
@@ -26,24 +39,11 @@ def get_member(id):
     else:
         return jsonify({"error": "Miembro no encontrado"}), 404
 
-@app.route('/members', methods=['GET'])
-def get_all_members():
-    members = jackson_family.get_all_members()
-    return jsonify(members), 200
-
-@app.route('/member', methods=['POST'])
-def add_member():
-    new_member = request.json
-    if not new_member:
-        return jsonify({"error": "Cuerpo de la solicitud inválido"}), 400
-    jackson_family.add_member(new_member)
-    return jsonify({"done": "Usuario creado"}), 200
-
-@app.route('/member/<int:id>', methods=['DELETE'])
+@app.route('/members/<int:id>', methods=['DELETE'])
 def delete_member(id):
     success = jackson_family.delete_member(id)
     if success:
-        return jsonify({"done": "Miembro eliminado"}), 200
+        return jsonify({"done": True}), 200
     else:
         return jsonify({"error": "Miembro no encontrado"}), 404
 
